@@ -10,7 +10,7 @@ using std::endl;
 BTNode* root = new BTNode();
 std::fstream fin;
 void addNode();
-bool codeSearch(std::string &code, char letter, BTNode * root);
+bool codeSearch(std::string &code, char character, BTNode * root);
 char morseTraversal(std::string s, BTNode *&p);
 
 
@@ -25,21 +25,24 @@ int main()
     }
     string toEncode = "test";
     string translation = "";
-    for(int i=0; i<toEncode.length(); i++){
+    for(int i=0; i<toEncode.length(); i++)
+	{
         codeSearch(translation, toEncode[i], root);
-        }
+    }
         std::cout << "Encode: " << toEncode << endl;
         std::cout << translation << endl;
         BTNode*traversal = root;
-        std::stringstream ss(translation);
+        std::istringstream ss(translation);
         string letter;
-        while (ss >> letter)
+		string decoded = "";
+        while (std::getline(ss,letter,' '))
         {
-            morseTraversal(letter, traversal);
+			BTNode*traversal = root;
+            decoded += morseTraversal(letter, traversal);
         }
        
         std::cout << "Decode: " <<  translation << endl;
-        std::cout << traversal << endl;
+        std::cout << decoded << endl;
         
         
         system("pause");
@@ -54,20 +57,26 @@ void addNode(){
     getline(fin,str);
     letter = str[0];
     morse = str.substr(1,str.length());
-    for(int i=1; i<str.length(); i++){
-        if(str[i] == '_'){
-            if(cursor->right == NULL){
+    for(int i=1; i<str.length(); i++)
+	{
+        if(str[i] == '_')
+		{
+            if(cursor->right == NULL)
+			{
                 cursor->right =  new BTNode();
-                cursor = cursor->right;
             }
+			cursor = cursor->right;
         }
-        else if(str[i] == '.'){
-            if(cursor->left == NULL){
+        else if(str[i] == '.')
+		{
+            if(cursor->left == NULL)
+			{
                 cursor->left =  new BTNode();
-                cursor = cursor->left;
             }
+			cursor = cursor->left;
         }
-        else{
+        else
+		{
             std::cout << "bad input" << endl;
         }
     }
@@ -76,11 +85,11 @@ void addNode(){
     
     
 }
-bool codeSearch(string &code, char letter, BTNode * root)
+bool codeSearch(string &code, char character, BTNode * root)
 {
-    if (root->letter == letter)
+    if (root->letter == character)
     {
-        code += root->morse + ' ';
+        code = code + root->morse + ' ';
         return true;
     }
     else
@@ -88,11 +97,11 @@ bool codeSearch(string &code, char letter, BTNode * root)
         bool check = false;
         if (root->left != NULL)
         {
-            check = codeSearch(code, letter, root->left);
+            check = codeSearch(code, character, root->left);
         }
         if (check == false && root->right != NULL)
         {
-            check = codeSearch(code, letter, root->right);
+            check = codeSearch(code, character, root->right);
         }
         return check;
     }
@@ -106,7 +115,7 @@ char morseTraversal(string s, BTNode *&p)
         p = p->left;
         return morseTraversal(s.substr(1, 10), p);
     }
-    else
+    else if (s[0]== '_')
     {
         p = p->right;
         return morseTraversal(s.substr(1, 10), p);
