@@ -125,8 +125,6 @@ private:
 
 	std::string pre_order(const BTNode<Item_Type>* local_root) const;
 
-
-
 	std::string post_order(const BTNode<Item_Type>* local_root) const;
 
 	std::string in_order(const BTNode<Item_Type>* local_root) const;
