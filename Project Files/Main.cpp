@@ -3,7 +3,6 @@
 #include <fstream>
 #include <sstream>
 #include "BTNode.h"
-#include "morse.txt"
 using std::cout;
 using std::string;
 using std::endl;
@@ -105,11 +104,11 @@ char morseTraversal(string s, BTNode *&p)
     else if (s[0] == '.')
     {
         p = p->left;
-        morseTraversal(s.substr(1, 10), p);
+        return morseTraversal(s.substr(1, 10), p);
     }
     else
     {
         p = p->right;
-        morseTraversal(s.substr(1, 10), p);
+        return morseTraversal(s.substr(1, 10), p);
     }
 }
